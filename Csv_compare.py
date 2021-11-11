@@ -1,4 +1,4 @@
-import dictify, Dict_lst, sys
+import Dictify, Dict_lst, sys
 
 #compare two csvs based on keys (columns arg)
 
@@ -8,9 +8,10 @@ import dictify, Dict_lst, sys
 #general goal: go through and compare the columns for each row to see if those values exist for those columsn in the other sheet 
 
 class Csv_compare:
-	def __init__(self, fname, columns, cust_name = ''):
+	def __init__(self, fname, columns= [], cust_name = ''):
 		if not isinstance(columns, list): raise TypeError("columns parameter must be list")
-		self.data = Dict_lst(Dictify(fname).main())
+		self.columns = columns
+		self.data = Dict_lst.Dict_lst(Dictify.Dictify(fname).main())
 		self.data.add_crit('Match?', 'N!')
 		self.cust_name = str(cust_name)
 	def __len__(self):
@@ -25,9 +26,9 @@ class Csv_compare:
 		row = []
 		for i in range(0, len(self.data)):
 			row = self.data.get_index(i)
-			for j in range(0, len(self.target)):
+			for j in range(0, len(target)):
 				#compares row columns
-				t_row = self.target.get_index(j)
+				t_row = target.get_index(j)
 				if self._compare_rows(row, t_row): 
 					row['Match?'] = 'Y'
 					break
@@ -49,6 +50,13 @@ class Csv_compare:
 		return True
 
 
+
+fname = 'tab1fromsheet.csv'
+t_fname = 'petroleaderaccountscards.csv'
+columns = ['Department Code', 'Fleet Code']
+m_inst = Csv_compare(fname,columns)
+t_inst = Csv_compare(t_fname)
+m_inst.compare_full(t_inst)
 
 
 
