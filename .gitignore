@@ -2,3 +2,5 @@
 *.csv
 *.xlsx
 *.pyc
+*.xls
+modtest.py
